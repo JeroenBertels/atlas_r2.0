@@ -53,16 +53,11 @@ class Mirc():
         if lesion_count == 0:
             Mirc.correct_zero_lesions_volume(y_pred_, vol, max_vol)
 
-        # vol_ = np.sum(y_pred_)
-        # _, lesion_count_ = label(y_pred_)
-        # print("\t-->", (lesion_count, lesion_count_), (int(vol), int(vol_)), np.min(y_pred_), y_pred_.dtype)
         return y_pred_
 
     def process(self):
         inp_path = loader_settings['InputPath']  # Path for the input
         out_path = loader_settings['OutputPath']  # Path for the output
-        # inp_path = "/Users/jberte3/atlas_in"  # Path for the input
-        # out_path = "/Users/jberte3/atlas_out"  # Path for the output
         file_list = os.listdir(inp_path)  # List of files in the input
         file_list = [os.path.join(inp_path, f) for f in file_list]
         for fil in file_list:
@@ -83,7 +78,6 @@ class Mirc():
             predictions = []
             for i in range(5):
                 dvn_model = DvnModel.load_model(f"/dvn_models/dvn_model_final_{i}")
-                # dvn_model = DvnModel.load_model(f"/Volumes/micapollo01_MIC_DATA/STAFF/jberte3/data/phd/git/micstroke/micstroke/MICCAI2022/ATLAS/Jeroen/docker_algorithms/MIRC/dvn_models/dvn_model_final_{i}")
                 predictions.append(dvn_model.predict("full_test_masked", sampler)[0][0][0][0, :, :, :, 0])
 
             prediction = np.mean(predictions, axis=0)
